@@ -1,4 +1,4 @@
-// getting funds 
+// getting funds
 // withdraw funds by the owner of the contract
 // set min funding value
 
@@ -6,21 +6,22 @@
 
 pragma solidity ^0.8.19;
 
-import {AggregatorV3Interface} from "node_modules/@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {
+    AggregatorV3Interface
+} from "node_modules/@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {PriceConverter} from "./PriceConverter.sol";
 
 error NotOwner();
 
-contract FundMe{
-
+contract FundMe {
     // so basically we can use the functions from the library for all uint256 values
     using PriceConverter for uint256;
 
     mapping(address => uint256) public addressToAmountFunded;
     address[] public funders;
 
-    // Could we make this constant?  
-    /* constant values must be known at compile time however, 
+    // Could we make this constant?
+    /* constant values must be known at compile time however,
     msg.sender is only known at deployment time */
 
     address public /* immutable */ i_owner;
@@ -33,7 +34,6 @@ contract FundMe{
     // function marked payable can receive Ether via msg.value.
 
     function fund() public payable {
-
         // value of a transaction is accessible through the msg.value property
         // This property is part of the global object msg
         // It represents the amount of Wei transferred in the current transaction, where Wei is the smallest unit of Ether (ETH).
@@ -59,9 +59,7 @@ contract FundMe{
         _;
     }
 
-
     function withdraw() public onlyOwner {
-
         for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
